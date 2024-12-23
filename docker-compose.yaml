@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api
+      target: base
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/workspace:cached
+  web:
+    container_name: web
+    build:
+      context: ./web
+      target: base
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/workspace:cached
+    environment:
+      - REACT_APP_API_SERVER=http://localhost:8080/api
+    depends_on:
+      - api
